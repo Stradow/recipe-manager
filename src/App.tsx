@@ -3,9 +3,8 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import RecipeListPage from "./pages/RecipeListPage";
-import CreateRecipePage from "./pages/CreateRecipePage";
 import RecipeDetailsPage from "./pages/RecipeDetailsPage";
-import EditRecipePage from "./pages/EditRecipePage";
+import CreateEditRecipePage from "./pages/CreateEditRecipePage";
 
 function App() {
   return (
@@ -15,9 +14,10 @@ function App() {
       <main>
         <Routes>
           <Route path="/" element={<RecipeListPage />} />
-          <Route path="/recipes/new" element={<CreateRecipePage />} />
+          <Route path="/recipes" element={<RecipeListPage />} />
+          <Route path="/recipes/new" element={<CreateEditRecipePage />} />
           <Route path="/recipes/:id" element={<RecipeDetailsPage />} />
-          <Route path="/recipes/:id/edit" element={<EditRecipePage />} />
+          <Route path="/recipes/:id/edit" element={<CreateEditRecipePage />} />
         </Routes>
       </main>
 
