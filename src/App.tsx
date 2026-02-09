@@ -5,6 +5,7 @@ import Footer from "./components/Footer";
 import RecipeListPage from "./pages/RecipeListPage";
 import RecipeDetailsPage from "./pages/RecipeDetailsPage";
 import CreateEditRecipePage from "./pages/CreateEditRecipePage";
+import NotFoundPage from "./components/NotFoundPage";
 
 function App() {
   return (
@@ -18,6 +19,8 @@ function App() {
           <Route path="/recipes/new" element={<CreateEditRecipePage />} />
           <Route path="/recipes/:id" element={<RecipeDetailsPage />} />
           <Route path="/recipes/:id/edit" element={<CreateEditRecipePage />} />
+
+          <Route path="/*" element={<NotFoundPage />} />
         </Routes>
       </main>
 
