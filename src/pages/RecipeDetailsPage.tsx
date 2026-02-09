@@ -60,7 +60,7 @@ const RecipeDetailsPage = () => {
             <h1 className="text-3xl font-bold text-[#3A2A1A] mb-3">
               {recipe.title}
             </h1>
-            <p className="text-gray-700 leading-relaxed">
+            <p className="text-[#3A2A1A] leading-relaxed">
               {recipe.description}
             </p>
           </div>
