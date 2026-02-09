@@ -96,7 +96,7 @@ const RecipeDetailsPage = () => {
           </div>
 
           <div className="flex gap-3 pt-4">
-            <Link to="/recipes/:id/edit">
+            <Link to={`/recipes/${id}/edit`}>
               <button className="flex items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold text-white bg-[#D28625] hover:bg-[#AB9983] transition">
                 <Pencil size={16} /> Edit
               </button>
