@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Recipe } from "../types/Recipe";
 import { Ingredient } from "../types/Ingredient";
 import { useNavigate } from "react-router-dom";
+import { Trash2 } from "lucide-react";
 
 interface RecipeFormProps {
   initialData: Recipe | null;
@@ -87,11 +88,11 @@ const RecipeForm = ({ initialData, onSubmit, isEditMode }: RecipeFormProps) => {
   return (
     <form onSubmit={handleSubmit} className="bg-[#F7F2F1] p-6 rounded-xl">
       <div className="space-y-12">
-        <div className="border-b border-[#D28625] pb-4">
+        {/* <div className="border-b border-[#D28625] pb-4">
           <h2 className="text-md font-semibold text-[#3A2A1A]">
             {isEditMode ? "Edit Recipe" : "Add New Recipe"}
           </h2>
-        </div>
+        </div> */}
 
         <div>
           <label className="block text-sm font-medium text-[#3A2A1A]">
@@ -212,7 +213,7 @@ const RecipeForm = ({ initialData, onSubmit, isEditMode }: RecipeFormProps) => {
                     className="text-[#9A8F86] rounded-md border border-[#D4C8BE] bg-white px-3 py-1 hover:text-red-600 transition"
                     aria-label="Remove ingredient"
                   >
-                    🗑
+                    <Trash2 size={16} />
                   </button>
                 </div>
               ))}
