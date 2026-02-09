@@ -14,6 +14,7 @@ const RecipeForm = ({ initialData, onSubmit, isEditMode }: RecipeFormProps) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [currentIngredient, setCurrentIngredient] = useState({
     name: "",
@@ -27,6 +28,7 @@ const RecipeForm = ({ initialData, onSubmit, isEditMode }: RecipeFormProps) => {
   useEffect(() => {
     if (initialData) {
       setTitle(initialData.title);
+      setDescription(initialData.description);
       setIngredients(initialData.ingredients);
 
       if (initialData.instructions) {
@@ -88,6 +90,7 @@ const RecipeForm = ({ initialData, onSubmit, isEditMode }: RecipeFormProps) => {
 
     const formData = new FormData();
     formData.append("title", title);
+    formData.append("description", description);
     formData.append("ingredients", JSON.stringify(ingredients));
     formData.append("instructions", JSON.stringify(instructions));
 
@@ -153,6 +156,21 @@ const RecipeForm = ({ initialData, onSubmit, isEditMode }: RecipeFormProps) => {
             }}
             placeholder="Salad with Grilled Chicken"
             required
+            className="mt-2 w-full rounded-md border border-[#D4C8BE] bg-white p-2 focus:outline-none"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-[#3A2A1A]">
+            Recipe Description:
+          </label>
+          <input
+            type="text"
+            value={description}
+            onChange={(e) => {
+              setDescription(e.target.value);
+            }}
+            placeholder="Small description about the dish"
             className="mt-2 w-full rounded-md border border-[#D4C8BE] bg-white p-2 focus:outline-none"
           />
         </div>
@@ -254,7 +272,7 @@ const RecipeForm = ({ initialData, onSubmit, isEditMode }: RecipeFormProps) => {
                   handleAddInstruction();
                 }
               }}
-              placeholder="Enter a step (e.g., Heat oil in a large pan)"
+              placeholder="Enter a step for the recipe"
               className="flex-1 rounded-md border border-[#D4C8BE] bg-white p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#D28625]"
             />
             <button
@@ -278,7 +296,7 @@ const RecipeForm = ({ initialData, onSubmit, isEditMode }: RecipeFormProps) => {
                   key={index}
                   className="flex items-start gap-3 bg-white p-3 rounded-md border border-[#D4C8BE]"
                 >
-                  <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#D28625] text-white flex items-center justify-center text-sm font-semibold">
+                  <span className="flex-shrink:0 w-8 h-8 rounded-full bg-[#D28625] text-white flex items-center justify-center text-sm font-semibold">
                     {index + 1}
                   </span>
                   <div className="flex-1 text-sm text-[#3A2A1A] pt-1">
