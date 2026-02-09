@@ -50,16 +50,12 @@ const CreateEditRecipePage = () => {
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="text-xl text-gray-600">Loading...</div>
-      </div>
-    );
+    return <p className="text-center p-8">Loading...</p>;
   }
 
   if (error) {
     return (
-      <div className="flex justify-center items-center min-h-screen">
+      <div className="p-6">
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
           {error}
         </div>
@@ -68,17 +64,17 @@ const CreateEditRecipePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
-      <div className="container mx-auto px-4">
-        <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
+    <div className="p-6">
+      <div className="border-b border-[#D28625] pb-4 mb-6">
+        <h1 className="text-xl font-semibold text-[#3A2A1A]">
           {isEditMode ? "Edit Recipe" : "Create New Recipe"}
         </h1>
-        <RecipeForm
-          initialData={recipe}
-          onSubmit={handleFormSubmit}
-          isEditMode={isEditMode}
-        />
       </div>
+      <RecipeForm
+        initialData={recipe}
+        onSubmit={handleFormSubmit}
+        isEditMode={isEditMode}
+      />
     </div>
   );
 };
