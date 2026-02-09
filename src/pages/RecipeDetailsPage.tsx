@@ -90,9 +90,27 @@ const RecipeDetailsPage = () => {
             <h2 className="text-xl font-semibold text-[#3A2A1A] mb-3 pb-2 border-b border-[#D28625]">
               Instructions:
             </h2>
-            <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-              {recipe.instructions}
-            </p>
+            <ol className="space-y-3">
+              {(() => {
+                try {
+                  const steps = JSON.parse(recipe.instructions);
+                  return Array.isArray(steps) ? (
+                    steps.map((step, index) => (
+                      <li key={index} className="flex gap-3">
+                        <span className="flex-shrink:0 w-8 h-8 rounded-full bg-[#D28625] text-white flex items-center justify-center text-sm font-semibold">
+                          {index + 1}
+                        </span>
+                        <span className="text-gray-700 pt-1">{step}</span>
+                      </li>
+                    ))
+                  ) : (
+                    <p className="text-gray-700">{recipe.instructions}</p>
+                  );
+                } catch {
+                  return <p className="text-gray-700">{recipe.instructions}</p>;
+                }
+              })()}
+            </ol>
           </div>
 
           <div className="flex gap-3 pt-4">

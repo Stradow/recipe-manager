@@ -15,11 +15,12 @@ const RecipeForm = ({ initialData, onSubmit, isEditMode }: RecipeFormProps) => {
   const [preview, setPreview] = useState<string | null>(null);
   const [title, setTitle] = useState("");
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
-  const [instructions, setInstructions] = useState("");
   const [currentIngredient, setCurrentIngredient] = useState({
     name: "",
     quantity: "",
   });
+  const [instructions, setInstructions] = useState<string[]>([]);
+  const [currentInstruction, setCurrentInstruction] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const nav = useNavigate();
 
@@ -27,7 +28,18 @@ const RecipeForm = ({ initialData, onSubmit, isEditMode }: RecipeFormProps) => {
     if (initialData) {
       setTitle(initialData.title);
       setIngredients(initialData.ingredients);
-      setInstructions(initialData.instructions);
+
+      if (initialData.instructions) {
+        try {
+          const parsed = JSON.parse(initialData.instructions);
+          setInstructions(
+            Array.isArray(parsed) ? parsed : [initialData.instructions],
+          );
+        } catch {
+          setInstructions([initialData.instructions]);
+        }
+      }
+
       if (initialData.imageUrl) {
         setPreview(initialData.imageUrl);
       }
@@ -51,6 +63,17 @@ const RecipeForm = ({ initialData, onSubmit, isEditMode }: RecipeFormProps) => {
     setIngredients(ingredients?.filter((ing) => ing.id !== id));
   };
 
+  const handleAddInstruction = () => {
+    if (currentInstruction.trim()) {
+      setInstructions([...instructions, currentInstruction.trim()]);
+      setCurrentInstruction("");
+    }
+  };
+
+  const handleRemoveInstruction = (index: number) => {
+    setInstructions(instructions.filter((_, i) => i !== index));
+  };
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -66,7 +89,7 @@ const RecipeForm = ({ initialData, onSubmit, isEditMode }: RecipeFormProps) => {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("ingredients", JSON.stringify(ingredients));
-    formData.append("instructions", instructions);
+    formData.append("instructions", JSON.stringify(instructions));
 
     if (imageFile) {
       formData.append("imageUrl", imageFile);
@@ -88,12 +111,6 @@ const RecipeForm = ({ initialData, onSubmit, isEditMode }: RecipeFormProps) => {
   return (
     <form onSubmit={handleSubmit} className="bg-[#F7F2F1] p-6 rounded-xl">
       <div className="space-y-12">
-        {/* <div className="border-b border-[#D28625] pb-4">
-          <h2 className="text-md font-semibold text-[#3A2A1A]">
-            {isEditMode ? "Edit Recipe" : "Add New Recipe"}
-          </h2>
-        </div> */}
-
         <div>
           <label className="block text-sm font-medium text-[#3A2A1A]">
             Recipe Photo
@@ -148,23 +165,6 @@ const RecipeForm = ({ initialData, onSubmit, isEditMode }: RecipeFormProps) => {
           <div className="grid grid-cols-[1fr_1fr_auto] items-end gap-3">
             <div>
               <label className="block text-xs font-medium text-[#3A2A1A] mb-1">
-                Ingredient Name:
-              </label>
-              <input
-                type="text"
-                value={currentIngredient.name}
-                onChange={(e) =>
-                  setCurrentIngredient({
-                    ...currentIngredient,
-                    name: e.target.value,
-                  })
-                }
-                placeholder="Tomatoes"
-                className="w-full rounded-md border border-[#D4C8BE] bg-white p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#D28625]"
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-medium text-[#3A2A1A] mb-1">
                 Quantity:
               </label>
               <input
@@ -180,6 +180,24 @@ const RecipeForm = ({ initialData, onSubmit, isEditMode }: RecipeFormProps) => {
                 className="w-full rounded-md border border-[#D4C8BE] bg-white p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#D28625]"
               />
             </div>
+            <div>
+              <label className="block text-xs font-medium text-[#3A2A1A] mb-1">
+                Ingredient Name:
+              </label>
+              <input
+                type="text"
+                value={currentIngredient.name}
+                onChange={(e) =>
+                  setCurrentIngredient({
+                    ...currentIngredient,
+                    name: e.target.value,
+                  })
+                }
+                placeholder="Tomatoes"
+                className="w-full rounded-md border border-[#D4C8BE] bg-white p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#D28625]"
+              />
+            </div>
+
             <button
               type="button"
               onClick={handleAddIngredient}
@@ -201,11 +219,11 @@ const RecipeForm = ({ initialData, onSubmit, isEditMode }: RecipeFormProps) => {
                   key={ingredient.id}
                   className="grid grid-cols-[1fr_1fr_auto] items-center gap-3 bg-white p-3 rounded-md border border-[#D4C8BE]"
                 >
-                  <div className="text-sm text-[#3A2A1A] font-medium">
-                    {ingredient.name}
-                  </div>
                   <div className="text-sm text-[#3A2A1A]">
                     {ingredient.quantity}
+                  </div>
+                  <div className="text-sm text-[#3A2A1A] font-medium">
+                    {ingredient.name}
                   </div>
                   <button
                     type="button"
@@ -222,18 +240,63 @@ const RecipeForm = ({ initialData, onSubmit, isEditMode }: RecipeFormProps) => {
         )}
 
         <div>
-          <label className="block text-sm font-medium text-[#3A2A1A]">
+          <label className="block text-sm font-medium text-[#3A2A1A] mb-3">
             Instructions:
           </label>
-          <textarea
-            rows={6}
-            value={instructions}
-            onChange={(e) => setInstructions(e.target.value)}
-            placeholder="Here you can add the instructions for the recipe..."
-            required
-            className="mt-2 w-full rounded-md border border-[#D4C8BE] bg-white p-2 focus:outline-none focus:ring-2 focus:ring-[#D28625]"
-          />
+          <div className="flex gap-3">
+            <input
+              type="text"
+              value={currentInstruction}
+              onChange={(e) => setCurrentInstruction(e.target.value)}
+              onKeyPress={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleAddInstruction();
+                }
+              }}
+              placeholder="Enter a step (e.g., Heat oil in a large pan)"
+              className="flex-1 rounded-md border border-[#D4C8BE] bg-white p-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#D28625]"
+            />
+            <button
+              type="button"
+              onClick={handleAddInstruction}
+              className="rounded-md bg-[#D28625] px-4 py-2 text-sm font-semibold text-white hover:bg-[#AB9983] transition"
+            >
+              Add Step
+            </button>
+          </div>
         </div>
+
+        {instructions.length > 0 && (
+          <div>
+            <label className="block text-sm font-medium text-[#3A2A1A] mb-3">
+              Current Steps:
+            </label>
+            <div className="space-y-2">
+              {instructions.map((step, index) => (
+                <div
+                  key={index}
+                  className="flex items-start gap-3 bg-white p-3 rounded-md border border-[#D4C8BE]"
+                >
+                  <span className="flex-shrink-0 w-8 h-8 rounded-full bg-[#D28625] text-white flex items-center justify-center text-sm font-semibold">
+                    {index + 1}
+                  </span>
+                  <div className="flex-1 text-sm text-[#3A2A1A] pt-1">
+                    {step}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveInstruction(index)}
+                    className="text-[#9A8F86] rounded-md border border-[#D4C8BE] bg-white px-3 py-1 hover:text-red-600 transition"
+                    aria-label="Remove step"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
 
       <div className="mt-6 flex justify-end gap-x-6">
