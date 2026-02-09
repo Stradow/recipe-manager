@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { Pencil, Trash2 } from "lucide-react";
 import type { Recipe } from "../types/Recipe";
+import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
 
 const RecipeDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -11,6 +12,7 @@ const RecipeDetailsPage = () => {
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -119,9 +121,10 @@ const RecipeDetailsPage = () => {
                 <Pencil size={16} /> Edit
               </button>
             </Link>
+
             <button
               type="button"
-              onClick={handleDeleteRecipe}
+              onClick={() => setIsDeleteModalOpen(true)}
               className="flex items-center gap-2 text-sm font-semibold rounded-md border border-[#D4C8BE] bg-white px-4 py-2 text-[#3A2A1A] hover:bg-[#D4C8BE] transition"
             >
               <Trash2 size={16} /> Delete Recipe
@@ -129,6 +132,16 @@ const RecipeDetailsPage = () => {
           </div>
         </div>
       </div>
+
+      <ConfirmDeleteModal
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        onConfirm={() => {
+          handleDeleteRecipe();
+          setIsDeleteModalOpen(false);
+        }}
+        recipeName={recipe.title}
+      />
     </div>
   );
 };
