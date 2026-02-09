@@ -9,10 +9,10 @@ import NotFoundPage from "./components/NotFoundPage";
 
 function App() {
   return (
-    <>
+    <div className="min-h-screen flex flex-col">
       <Navbar />
 
-      <main>
+      <main className="flex-1">
         <Routes>
           <Route path="/" element={<RecipeListPage />} />
           <Route path="/recipes" element={<RecipeListPage />} />
@@ -25,7 +25,7 @@ function App() {
       </main>
 
       <Footer />
-    </>
+    </div>
   );
 }
 
