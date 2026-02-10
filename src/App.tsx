@@ -6,6 +6,8 @@ import RecipeListPage from "./pages/RecipeListPage";
 import RecipeDetailsPage from "./pages/RecipeDetailsPage";
 import CreateEditRecipePage from "./pages/CreateEditRecipePage";
 import NotFoundPage from "./components/NotFoundPage";
+import LoginPage from "./pages/LoginPage";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
   return (
@@ -14,6 +16,8 @@ function App() {
 
       <main className="flex-1">
         <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="/" element={<RecipeListPage />} />
           <Route path="/recipes" element={<RecipeListPage />} />
           <Route path="/recipes/new" element={<CreateEditRecipePage />} />
