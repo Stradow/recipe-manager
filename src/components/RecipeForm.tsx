@@ -14,7 +14,7 @@ const RecipeForm = ({ initialData, onSubmit, isEditMode }: RecipeFormProps) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [description, setDescription] = useState<string | undefined>("");
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [currentIngredient, setCurrentIngredient] = useState({
     name: "",
@@ -90,7 +90,7 @@ const RecipeForm = ({ initialData, onSubmit, isEditMode }: RecipeFormProps) => {
 
     const formData = new FormData();
     formData.append("title", title);
-    formData.append("description", description);
+    formData.append("description", description ?? "");
     formData.append("ingredients", JSON.stringify(ingredients));
     formData.append("instructions", JSON.stringify(instructions));
 
