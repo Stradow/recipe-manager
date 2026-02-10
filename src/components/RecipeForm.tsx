@@ -10,7 +10,7 @@ interface RecipeFormProps {
   isEditMode: boolean;
 }
 
-const RecipeForm = ({ initialData, onSubmit, isEditMode }: RecipeFormProps) => {
+const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [title, setTitle] = useState("");
