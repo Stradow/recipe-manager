@@ -8,6 +8,7 @@ import CreateEditRecipePage from "./pages/CreateEditRecipePage";
 import NotFoundPage from "./components/NotFoundPage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -20,10 +21,38 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
 
           <Route path="/" element={<RecipeListPage />} />
-          <Route path="/recipes" element={<RecipeListPage />} />
-          <Route path="/recipes/new" element={<CreateEditRecipePage />} />
-          <Route path="/recipes/:id" element={<RecipeDetailsPage />} />
-          <Route path="/recipes/:id/edit" element={<CreateEditRecipePage />} />
+          <Route
+            path="/recipes"
+            element={
+              <ProtectedRoute>
+                <RecipeListPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/recipes/new"
+            element={
+              <ProtectedRoute>
+                <CreateEditRecipePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/recipes/:id"
+            element={
+              <ProtectedRoute>
+                <RecipeDetailsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/recipes/:id/edit"
+            element={
+              <ProtectedRoute>
+                <CreateEditRecipePage />
+              </ProtectedRoute>
+            }
+          />
 
           <Route path="/*" element={<NotFoundPage />} />
         </Routes>
