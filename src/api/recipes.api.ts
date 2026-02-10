@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Recipe } from "../types/Recipe";
 
-const API_URL = "http://localhost:5005/api";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const recipeService = {
   getAllRecipes: async (): Promise<Recipe[]> => {
