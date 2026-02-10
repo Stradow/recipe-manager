@@ -1,19 +1,46 @@
 import RecipeLogo from "../assets/images/logo.png";
 import { Link } from "react-router-dom";
-import { Plus } from "lucide-react";
+import { Plus, LogOut, User } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
+  const { user, logout, isAuthenticated } = useAuth();
+
   return (
     <nav className="flex items-center justify-between bg-[#F7F2F1] p-4 rounded-xl shadow-md">
       <Link to="/">
         <img src={RecipeLogo} alt="Recipe Book Logo" className="h-20 w-auto" />
       </Link>
-      <Link to="/recipes/new">
-        <button className="cursor-pointer flex items-center gap-2 rounded-md bg-[#D28625] px-4 py-2 text-sm font-semibold text-white hover:bg-[#AB9983] transition">
-          <Plus size={16} /> Add Recipe
-        </button>
-      </Link>
+
+      <div className="flex items-center gap-4">
+        {isAuthenticated ? (
+          <>
+            <span className="text-sm text-[#3A2A1A] flex items-center gap-2">
+              <User size={16} />
+              {user?.name || user?.email}
+            </span>
+            <Link to="/recipes/new">
+              <button className="cursor-pointer flex items-center gap-2 rounded-md bg-[#D28625] px-4 py-2 text-sm font-semibold text-white hover:bg-[#AB9983] transition">
+                <Plus size={16} /> Add Recipe
+              </button>
+            </Link>
+            <button
+              onClick={logout}
+              className="cursor-pointer flex items-center gap-2 rounded-md border border-[#D4C8BE] bg-white px-4 py-2 text-sm font-semibold text-[#3A2A1A] hover:bg-[#D4C8BE] transition"
+            >
+              <LogOut size={16} /> Logout
+            </button>
+          </>
+        ) : (
+          <Link to="login">
+            <button className="cursor-pointer flex items-center gap-2 rounded-md bg-[#D28625] px-4 py-2 text-sm font-semibold text-white hover:bg-[#AB9983] transition">
+              Login
+            </button>
+          </Link>
+        )}
+      </div>
     </nav>
   );
 };
+
 export default Navbar;
