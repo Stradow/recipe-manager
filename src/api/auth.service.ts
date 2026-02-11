@@ -1,6 +1,4 @@
-import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL;
+import apiClient from "./Api.client";
 
 interface AuthResponse {
   user: {
@@ -14,7 +12,7 @@ interface AuthResponse {
 export const authorizationToken = async (
   token: string,
 ): Promise<AuthResponse> => {
-  const { data } = await axios.get(`${API_URL}/auth/verify`, {
+  const { data } = await apiClient.get("/auth/verify", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -23,11 +21,11 @@ export const authorizationToken = async (
 };
 
 export const login = async (credentials: object): Promise<AuthResponse> => {
-  const { data } = await axios.post(`${API_URL}/auth/login`, credentials);
+  const { data } = await apiClient.post("/auth/login", credentials);
   return data;
 };
 
 export const register = async (credentials: object): Promise<AuthResponse> => {
-  const { data } = await axios.post(`${API_URL}/auth/register`, credentials);
+  const { data } = await apiClient.post("/auth/register", credentials);
   return data;
 };
