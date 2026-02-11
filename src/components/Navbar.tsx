@@ -1,10 +1,12 @@
 import RecipeLogo from "../assets/images/logo.png";
-import { Link } from "react-router-dom";
-import { Plus, LogOut, User } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
+import { Plus, LogOut, User, UserPlus } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
+  const location = useLocation();
+  const isLoginPage = location.pathname === "/login";
 
   return (
     <nav className="flex items-center justify-between bg-[#F7F2F1] p-4 rounded-xl shadow-md">
@@ -31,8 +33,14 @@ const Navbar = () => {
               <LogOut size={16} /> Logout
             </button>
           </>
+        ) : isLoginPage ? (
+          <Link to="/register">
+            <button className="cursor-pointer flex items-center gap-2 rounded-md border border-[#D28625] bg-white px-4 py-2 text-sm font-semibold text-[#D28625] hover:bg-[#F7F2F1] transition">
+              <UserPlus size={16} /> Register
+            </button>
+          </Link>
         ) : (
-          <Link to="login">
+          <Link to="/login">
             <button className="cursor-pointer flex items-center gap-2 rounded-md bg-[#D28625] px-4 py-2 text-sm font-semibold text-white hover:bg-[#AB9983] transition">
               Login
             </button>
