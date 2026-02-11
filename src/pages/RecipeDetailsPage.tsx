@@ -1,7 +1,7 @@
 import { recipeService } from "../api/recipes.api";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import { Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, ArrowLeft } from "lucide-react";
 import type { Recipe } from "../types/Recipe";
 import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
 
@@ -48,6 +48,15 @@ const RecipeDetailsPage = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6">
+      <button
+        onClick={() => {
+          nav(-1);
+        }}
+        className="flex items-center gap-2 text-[#D28625] hover:text-[#AB9983] transition mb-6"
+      >
+        <ArrowLeft size={20} /> Back
+      </button>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div>
           <img
