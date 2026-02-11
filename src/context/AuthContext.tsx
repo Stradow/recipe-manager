@@ -8,7 +8,7 @@ import {
 import {
   login as loginApi,
   register as registerApi,
-} from "../api/Auth.service";
+} from "../api/auth.service";
 
 interface User {
   id: string;
