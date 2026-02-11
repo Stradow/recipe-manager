@@ -1,4 +1,4 @@
-import apiClient from "./Api.client";
+import apiClient from "./api.client";
 import { Recipe } from "../types/Recipe";
 
 const checkAuth = () => {
