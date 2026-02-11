@@ -4,10 +4,12 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { Pencil, Trash2, ArrowLeft } from "lucide-react";
 import type { Recipe } from "../types/Recipe";
 import ConfirmDeleteModal from "../components/ConfirmDeleteModal";
+import { useAuth } from "../context/AuthContext";
 
 const RecipeDetailsPage = () => {
   const { id } = useParams<{ id: string }>();
   const nav = useNavigate();
+  const { user } = useAuth();
 
   const [recipe, setRecipe] = useState<Recipe | null>(null);
   const [loading, setLoading] = useState(true);
@@ -124,21 +126,23 @@ const RecipeDetailsPage = () => {
             </ol>
           </div>
 
-          <div className="flex gap-3 pt-4">
-            <Link to={`/recipes/${id}/edit`}>
-              <button className="flex items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold text-white bg-[#D28625] hover:bg-[#AB9983] transition">
-                <Pencil size={16} /> Edit
-              </button>
-            </Link>
+          {user && recipe.userId === user.id && (
+            <div className="flex gap-3 pt-4">
+              <Link to={`/recipes/${id}/edit`}>
+                <button className="flex items-center gap-2 rounded-md px-4 py-2 text-sm font-semibold text-white bg-[#D28625] hover:bg-[#AB9983] transition">
+                  <Pencil size={16} /> Edit
+                </button>
+              </Link>
 
-            <button
-              type="button"
-              onClick={() => setIsDeleteModalOpen(true)}
-              className="flex items-center gap-2 text-sm font-semibold rounded-md border border-[#D4C8BE] bg-white px-4 py-2 text-[#3A2A1A] hover:bg-[#D4C8BE] transition"
-            >
-              <Trash2 size={16} /> Delete Recipe
-            </button>
-          </div>
+              <button
+                type="button"
+                onClick={() => setIsDeleteModalOpen(true)}
+                className="flex items-center gap-2 text-sm font-semibold rounded-md border border-[#D4C8BE] bg-white px-4 py-2 text-[#3A2A1A] hover:bg-[#D4C8BE] transition"
+              >
+                <Trash2 size={16} /> Delete Recipe
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
