@@ -12,10 +12,10 @@ This repository contains the **frontend** portion of the Recipe Manager project.
 
 ## 🚀 Features (To Be Built)
 
-- 🔎 Search and filter recipes
+- 🔎 Filter recipes
 - 📱 Fully responsive design for mobile & tablet
-- 🧠 Optional: Connect to a backend API (REST / Postgres) for data persistence
 - 📤 Export recipes and share with others
+- 📶 Choose Difficulty "Easy, Medium, hard"
 
 _These features are planned — feel free to add them as issues or pull requests!_
 
