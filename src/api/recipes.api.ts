@@ -5,26 +5,59 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export const recipeService = {
   getAllRecipes: async (): Promise<Recipe[]> => {
-    const response = await axios.get(`${API_URL}/recipes`);
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("No auth token found");
+
+    const response = await axios.get(`${API_URL}/recipes`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   },
 
   getRecipeById: async (id: string): Promise<Recipe> => {
-    const response = await axios.get(`${API_URL}/recipes/${id}`);
+    const token = localStorage.getItem("token");
+
+    const response = await axios.get(`${API_URL}/recipes/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   },
 
   createRecipe: async (data: FormData): Promise<Recipe> => {
-    const response = await axios.post(`${API_URL}/recipes`, data);
+    const token = localStorage.getItem("token");
+
+    console.log("Token:", token);
+
+    const response = await axios.post(`${API_URL}/recipes`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   },
 
   updateRecipe: async (id: string, data: FormData): Promise<Recipe> => {
-    const response = await axios.put(`${API_URL}/recipes/${id}`, data);
+    const token = localStorage.getItem("token");
+
+    const response = await axios.put(`${API_URL}/recipes/${id}`, data, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     return response.data;
   },
 
   deleteRecipe: async (id: string): Promise<void> => {
-    await axios.delete(`${API_URL}/recipes/${id}`);
+    const token = localStorage.getItem("token");
+
+    await axios.delete(`${API_URL}/recipes/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   },
 };

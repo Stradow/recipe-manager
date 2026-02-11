@@ -22,6 +22,7 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
   });
   const [instructions, setInstructions] = useState<string[]>([]);
   const [currentInstruction, setCurrentInstruction] = useState("");
+  const [isPublic, setIsPublic] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const nav = useNavigate();
 
@@ -93,6 +94,7 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
     formData.append("description", description ?? "");
     formData.append("ingredients", JSON.stringify(ingredients));
     formData.append("instructions", JSON.stringify(instructions));
+    formData.append("isPublic", isPublic.toString());
 
     if (imageFile) {
       formData.append("imageUrl", imageFile);
@@ -158,6 +160,23 @@ const RecipeForm = ({ initialData, onSubmit }: RecipeFormProps) => {
             required
             className="mt-2 w-full rounded-md border border-[#D4C8BE] bg-white p-2 focus:outline-none"
           />
+        </div>
+
+        <div>
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={isPublic}
+              onChange={(e) => setIsPublic(e.target.checked)}
+              className="w-6 h-4 text-[#D28625] border-[#D4C8BE] rounded focus:ring-[#D28625]"
+            />
+            <span className="text-sm font-medium text-[#3A2A1A]">
+              Make this recipe public
+            </span>
+          </label>
+          <p className="text-xs text-gray-500 mt-1 ml-6">
+            Public recipes can be seen by all users
+          </p>
         </div>
 
         <div>
