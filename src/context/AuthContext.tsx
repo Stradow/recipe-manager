@@ -5,7 +5,10 @@ import {
   useEffect,
   ReactNode,
 } from "react";
-import { login as loginApi, register as registerApi } from "../api/auth.api";
+import {
+  login as loginApi,
+  register as registerApi,
+} from "../api/Auth.service";
 
 interface User {
   id: string;
